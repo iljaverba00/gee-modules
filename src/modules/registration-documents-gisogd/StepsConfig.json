@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Проверка",
+    "body": "This step wont show up because it is disabled.",
+    "stageCompleted": "Этап проверки завершен, было принято решение _Взять заявку в работу_",
+    "icon": "assignment_turned_in"
+  },
+  {
+    "title": "Подготовка",
+    "body": "For each ad campaign that you create, you can control how much youre willing ...",
+    "icon": "developer_board"
+  },
+  {
+    "title": "Размещение",
+    "body": "This step wont show up because it is disabled.",
+    "icon": "push_pin"
+  },
+  {
+    "title": "Размещение векторной графики",
+    "body": "This step wont show up because it is disabled.",
+    "icon": "location_on"
+  }
+]

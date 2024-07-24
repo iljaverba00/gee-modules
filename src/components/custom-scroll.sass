@@ -1,0 +1,29 @@
+.custom-scroll
+  overflow: auto
+  overflow: overlay
+
+  &::-webkit-scrollbar-button
+    display: none
+
+  &::-webkit-scrollbar-track
+    opacity: 0
+    &:hover
+      &::-webkit-scrollbar-thumb
+        opacity: 1
+
+  &::-webkit-scrollbar-thumb
+    -webkit-border-radius: 4px
+    border-radius: 4px
+    background-color: rgba(39, 39, 39, 0.35)
+    &:hover
+      background-color: rgba(39, 39, 39, 0.3)
+    &:active
+      background-color: rgba(39, 39, 39, 0.45)
+
+  &::-webkit-resizer
+    width: 8px
+    height: 8px
+
+  &::-webkit-scrollbar
+    width: 8px
+    height: 8px
