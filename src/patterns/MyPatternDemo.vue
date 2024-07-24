@@ -21,6 +21,14 @@ body {
 
 }
 
+.app {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 30px;
+  position: relative;
+}
+
 :root {
   --q-primary: #2450df;
   --q-secondary: #04db89;
