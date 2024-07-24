@@ -10,6 +10,8 @@
 </template>
 
 <script setup lang="ts">
+import MainWrapper from "../../components/the-basics/MainWrapper.vue";
+
 const props = defineProps<{
   foo: string
   bar: number
