@@ -74,12 +74,14 @@ const onValidateXmlDocument = async (docId: object) => {
 }
 
 const onShowXML = async (docId: object) => {
-  xsdxmlData.value = await getDocument(docId)
+  const doc = await getDocument(docId);
+  xsdxmlData.value = JSON.stringify(doc);
   showXsdXmlDialog.value = true;
 }
 
 const onShowXSD = async (schId: object) => {
-  xsdxmlData.value = await getSchema(schId)
+  const sch = await getSchema(schId);
+  xsdxmlData.value = JSON.stringify(sch);
   showXsdXmlDialog.value = true;
 }
 
@@ -95,18 +97,30 @@ const selectSchema = async (schema: XFItem) => {
 
 async function updateSchemaHere() {
   await updateSchema(createSchemaData.value);
-  void updateSchemaList();
+  void onUpdateSchemaList();
 }
 
-const updateSchemaList = async () => {
+const onRemoveDocument = async (docId: object) => {
+  await removeDocument(docId);
+  await onUpdateDocumentList();
+}
+const onRemoveSchema = async (schId: object) => {
+  await removeSchema(schId)
+  await onUpdateSchemaList();
+}
+const onUpdateDocumentList = async () => {
+  if (activeScheme.value) {
+    documentsList.value = await getDocuments(activeScheme.value.value);
+  }
+}
+const onUpdateSchemaList = async () => {
   schemesList.value = await getSchemes();
 }
-
 
 onMounted(async () => {
   isSupport.value = await checkSupporting();
   if (isSupport.value) {
-    void updateSchemaList()
+    void onUpdateSchemaList()
   }
 })
 
@@ -159,7 +173,9 @@ onMounted(async () => {
                 active-class="my-menu-link"
             >
               <q-item-section>
-                <q-item-label>XSD cхема : {{ schema.Name.value ? schema.Name.value : '' }}</q-item-label>
+                <q-item-label :style="activeScheme === schema.XsdSchema_ID?'color:white':''">XSD cхема :
+                  {{ schema.Name.value ? schema.Name.value : '' }}
+                </q-item-label>
                 <q-item-label caption :style="activeScheme === schema.XsdSchema_ID?'color:white':''">
                   {{ schema.Desc.name }} : {{ schema.Name.value }}
                 </q-item-label>
@@ -182,7 +198,7 @@ onMounted(async () => {
                   </q-btn>
                   <q-btn :style="activeScheme === schema.XsdSchema_ID?'color:white':''"
                          class="gt-xs" size="12px" flat dense round icon="delete"
-                         @click="$event.stopPropagation(); removeSchema(schema.XsdSchema_ID.value)">
+                         @click="$event.stopPropagation(); onRemoveSchema(schema.XsdSchema_ID.value)">
                     <q-tooltip>Удалить XSD схему</q-tooltip>
                   </q-btn>
                 </div>
@@ -236,7 +252,7 @@ onMounted(async () => {
                     <q-tooltip>Показать XML документ</q-tooltip>
                   </q-btn>
                   <q-btn class="gt-xs" size="12px" flat dense round icon="delete"
-                         @click="$event.stopPropagation();removeDocument(document.XmlDocument_ID.value)">
+                         @click="$event.stopPropagation(); onRemoveDocument(document.XmlDocument_ID.value)">
                     <q-tooltip>Удалить XML документ</q-tooltip>
                   </q-btn>
                 </div>
