@@ -1,4 +1,3 @@
-import {IFolderRequestData} from "../file-directory/FileDirectoryTypes.ts";
 
 export interface XFItemScheme {
     XsdSchema_ID: XFItem
@@ -33,17 +32,22 @@ export interface XFItem {
     value: object
 }
 
+export interface XFCreateSchema{
+    name: string,
+    file: File | undefined
+}
+
 
 export interface RequestsXSDType {
-    getSchemes: () => Promise<string | undefined>
-    getSchema: () => Promise<string | undefined>
-    updateSchema: () => Promise<string | undefined>
-    removeSchema: () => Promise<string | undefined>
-    getDocuments: () => Promise<string | undefined>
-    getDocument: () => Promise<string | undefined>
+    getSchemes: () => Promise<XFItemScheme[] | undefined>
+    getSchema: (schId: object) => Promise<string | undefined>
+    updateSchema: (sch: XFCreateSchema) => Promise<string | undefined>
+    removeSchema: (schId: object) => Promise<string | undefined>
+    getDocuments: (docId: object) => Promise<XFItemDocument[] | undefined>
+    getDocument: (docId: object) => Promise<string | undefined>
     updateDocument: () => Promise<string | undefined>
-    removeDocument: () => Promise<string | undefined>
-    getHTMLForm: () => Promise<string | undefined>
-    validateXMLDocument: () => Promise<string | undefined>
-    checkSupporting: () => Promise<string | undefined>
+    removeDocument: (docId: object) => Promise<string | undefined>
+    getHTMLForm: (schId: object) => Promise<string | undefined>
+    validateXMLDocument: (docId: object) => Promise<string | undefined>
+    checkSupporting: () => Promise<boolean | undefined>
 }

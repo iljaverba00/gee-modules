@@ -1,42 +1,50 @@
-import {XFItemDocument, XFItemScheme} from "./XsdFormAdminTypes.ts";
+import {RequestsXSDType, XFCreateSchema, XFItemDocument, XFItemScheme} from "./XsdFormAdminTypes.ts";
 
 export default function requests() {
+    const getSchemes = async (): Promise<XFItemScheme[] | undefined> => {
+        return undefined;
+    }
 
-    const getSchemes = async (): [XFItemScheme] => {
-        return []
+    const getSchema = async (schId: object): Promise<string | undefined> => {
+        console.log('getSchema',schId)
+        return undefined;
     }
-    const getSchema = async () => {
-        return "xsd"
+
+    const updateSchema = async (sch: XFCreateSchema): Promise<string | undefined> => {
+        console.log('updateSchema',sch)
+        return undefined;
     }
-    const updateSchema = async (value) => {
-        console.log('updateSchema', value)
+
+    const removeSchema = async (schId: object):Promise<string | undefined> => {
+        console.log('removeSchema',schId)
+        return undefined
     }
-    const removeSchema = async () => {
-        console.log('removeSchema')
+    const getDocuments = async (): Promise<XFItemDocument[]| undefined> => {
+        return undefined;
     }
-    const getDocuments = async (schId: number): XFItemDocument => {
-        console.log(schId)
-        return []
+    const getDocument = async (docId: object):Promise<string | undefined>  => {
+        console.log('getDocument',docId)
+        return undefined;
     }
-    const getDocument = async () => {
-        console.log('getDocument')
-    }
-    const updateDocument = async () => {
+    const updateDocument = async ():Promise<string | undefined>  => {
         console.log('updateDocument')
+        return undefined;
     }
-    const removeDocument = async (docId: number) => {
+    const removeDocument = async (docId: object):Promise<string | undefined>  => {
         console.log('removeDocument', docId)
+        return undefined;
     }
-    const getHTMLForm = async (id: number) => {
+    const getHTMLForm = async (id: object):Promise<string | undefined>  => {
         console.log(id)
-        return ''
+        return undefined;
     }
-    const validateXMLDocument = async (docId: number) => {
+    const validateXMLDocument = async (docId: object):Promise<string | undefined>  => {
         console.log('validateXMLDocument', docId)
+        return undefined;
     }
-    const checkSupporting = async (): boolean => {
+    const checkSupporting = async (): Promise<boolean | undefined>  => {
         console.log('checkSupporting')
-        return true
+        return true;
     }
 
     return {
@@ -51,5 +59,5 @@ export default function requests() {
         getHTMLForm,
         validateXMLDocument,
         checkSupporting
-    }
+    } as RequestsXSDType
 }

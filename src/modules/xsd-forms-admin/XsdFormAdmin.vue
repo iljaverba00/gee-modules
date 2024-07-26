@@ -1,3 +1,110 @@
+<script setup lang="ts">
+import MainWrapper from '../../components/the-basics/MainWrapper.vue'
+import {onMounted, ref} from "vue";
+import {
+  QSplitter,
+  QToolbar,
+  QToolbarTitle,
+  QSeparator,
+  QBtn
+} from 'quasar';
+import ThisDialog from "../../components/ThisDialog.vue";
+import {RequestsXSDType, XFCreateSchema, XFItem, XFItemDocument, XFItemScheme} from "./XsdFormAdminTypes.ts";
+
+const emit = defineEmits<{
+  (e: 'moduleStartView'): void
+  (e: 'moduleEndView'): void
+}>()
+
+const props = defineProps<{ requests: RequestsXSDType }>()
+
+const {
+  getSchemes,
+  getSchema,
+  updateSchema,
+  removeSchema,
+  getDocuments,
+  getDocument,
+  //updateDocument,
+  removeDocument,
+  getHTMLForm,
+  validateXMLDocument,
+  checkSupporting
+} = props.requests
+
+const splitterHorizontal = ref(50);
+
+const schemesList = ref<XFItemScheme[] | undefined>([]);
+const documentsList = ref<XFItemDocument[] | undefined>([])
+
+const activeScheme = ref<XFItem | null>(null);
+//const activeDocument = ref();
+
+const showCreateDialog = ref(false);
+const createSchemaData = ref<XFCreateSchema>({name: '', file: undefined})
+
+const showFormDialog = ref(false);
+const formData = ref<string | undefined>()
+
+const showXsdXmlDialog = ref(false);
+const xsdxmlData = ref<string | undefined>()
+
+const isSupport = ref();
+
+
+const onShowFormDialog = async (id: object) => {
+  formData.value = await getHTMLForm(id);
+  showFormDialog.value = true;
+}
+
+const onValidateXmlDocument = async (docId: object) => {
+  const result = await validateXMLDocument(docId)
+  if (!result) {
+    console.log("success")
+  } else {
+    console.log("errors")
+  }
+}
+
+const onShowXML = async (docId: object) => {
+  xsdxmlData.value = await getDocument(docId)
+  showXsdXmlDialog.value = true;
+}
+
+const onShowXSD = async (schId: object) => {
+  xsdxmlData.value = await getSchema(schId)
+  showXsdXmlDialog.value = true;
+}
+
+const selectSchema = async (schema: XFItem) => {
+  if (activeScheme?.value?.value === schema.value) {
+    activeScheme.value = null;
+    documentsList.value = [];
+  } else {
+    activeScheme.value = schema;
+    documentsList.value = await getDocuments(activeScheme.value.value);
+  }
+}
+
+async function updateSchemaHere() {
+  await updateSchema(createSchemaData.value);
+  void updateSchemaList();
+}
+
+const updateSchemaList = async () => {
+  schemesList.value = await getSchemes();
+}
+
+
+onMounted(async () => {
+  isSupport.value = await checkSupporting();
+  if (isSupport.value) {
+    void updateSchemaList()
+  }
+})
+
+</script>
+
 <template>
   <main-wrapper
       :full-screen-mode="false"
@@ -34,13 +141,13 @@
             padding class="rounded-borders text-primary">
           <div
               v-for="schema of schemesList"
-              :key="schema"
+              :key="schema.XsdSchema_ID.name"
           >
             <q-item
                 clickable
                 v-ripple
                 :active="activeScheme === schema.XsdSchema_ID"
-                @click="selectSchema(schema)"
+                @click="selectSchema(schema.XsdSchema_ID)"
                 active-class="my-menu-link"
             >
               <q-item-section>
@@ -57,7 +164,7 @@
                 <div class="text-grey-8 q-gutter-xs">
                   <q-btn :style="activeScheme === schema.XsdSchema_ID?'color:white':''"
                          class="gt-xs" size="12px" flat dense round icon="preview"
-                         @click="$event.stopPropagation();onShowFormDialog()">
+                         @click="$event.stopPropagation();onShowFormDialog(schema.XsdSchema_ID.value)">
                     <q-tooltip>Показать форму для заполнения</q-tooltip>
                   </q-btn>
                   <q-btn :style="activeScheme === schema.XsdSchema_ID?'color:white':''"
@@ -77,9 +184,9 @@
           </div>
 
         </q-list>
-        <div style="text-align: center" class="text-subtitle1 text-primary" v-else>
+        <div class="text-subtitle1 text-primary center" v-else>
           {{
-            isSupport ? 'В данном банке еще не добавлены схемы XSD' :
+            isSupport ? 'В этом банке еще не добавлены схемы XSD' :
                 'Для данной метамодели/банка XML схема не поддерживается'
           }}
         </div>
@@ -91,7 +198,7 @@
             padding class="rounded-borders text-primary">
           <div
               v-for="document of documentsList"
-              :key="document"
+              :key="document.XsdSchema_ID.name"
           >
             <q-item
                 clickable
@@ -130,8 +237,8 @@
             <q-separator/>
           </div>
         </q-list>
-        <div style="text-align: center" class="text-subtitle1 text-primary" v-else>
-          Выберите схему для добавления документа
+        <div class="text-subtitle1 text-primary center" v-else>
+          Выберите схему слева, для отображения документов
         </div>
       </template>
     </q-splitter>
@@ -142,7 +249,7 @@
       title="Заполните данные для создания схемы"
       :show="showCreateDialog"
       @cancel="showCreateDialog = false"
-      @yes="showCreateDialog = false; updateSchemaHere"
+      @yes="showCreateDialog = false; updateSchemaHere()"
   >
     <q-input :model-value="createSchemaData.name" label="Наименование"/>
     <q-file :model-value="createSchemaData.file" label="Файл XSD схемы" accept=".xsd"/>
@@ -154,7 +261,7 @@
       @cancel="showFormDialog = false"
       @yes="showFormDialog = false"
   >
-    <div class="full-height full-width" v-html="formData.form"/>
+    <div class="full-height full-width" v-html="formData"/>
   </ThisDialog>
 
   <ThisDialog
@@ -163,123 +270,23 @@
       @cancel="showXsdXmlDialog = false"
       @yes="showXsdXmlDialog = false"
   >
-    <div class="full-height full-width" v-html="xsdxmlData?.data"/>
+    <div class="full-height full-width" v-html="xsdxmlData"/>
   </ThisDialog>
 
 
 </template>
-
-<script setup lang="ts">
-import MainWrapper from '../../components/the-basics/MainWrapper.vue'
-import {onMounted, ref} from "vue";
-import {
-  QSplitter,
-  QToolbar,
-  QToolbarTitle,
-  QSeparator,
-  QBtn
-} from 'quasar';
-import ThisDialog from "../../components/ThisDialog.vue";
-import type {RequestsType} from "../file-directory/FileDirectoryTypes.ts";
-
-const emit = defineEmits<{
-  (e: 'moduleStartView'): void
-  (e: 'moduleEndView'): void
-}>()
-
-const props = defineProps<{ requests: RequestsType }>()
-
-const {
-  getSchemes,
-  getSchema,
-  updateSchema,
-  removeSchema,
-  getDocuments,
-  getDocument,
-  //updateDocument,
-  removeDocument,
-  getHTMLForm,
-  validateXMLDocument,
-  checkSupporting
-} = props.requests
-
-const splitterHorizontal = ref(50);
-
-const schemesList = ref([]);
-const documentsList = ref([])
-
-const activeScheme = ref(null);
-//const activeDocument = ref();
-
-const showCreateDialog = ref(false);
-const createSchemaData = ref({name: '', file: null})
-
-const showFormDialog = ref(false);
-const formData = ref({form: ''})
-
-const showXsdXmlDialog = ref(false);
-const xsdxmlData = ref({data: ''})
-
-const isSupport = ref();
-
-
-const onShowFormDialog = async (id: number) => {
-  formData.value.form = await getHTMLForm(id);
-  showFormDialog.value = true;
-}
-
-const onValidateXmlDocument = async (docId: number) => {
-  const result = await validateXMLDocument(docId)
-  if (!result) {
-    console.log("success")
-  } else {
-    console.log("errors")
-  }
-}
-
-const onShowXML = async (docId: number) => {
-  xsdxmlData.value.data = await getDocument(docId)
-  showXsdXmlDialog.value = true;
-}
-
-const onShowXSD = async (schId: number) => {
-  xsdxmlData.value.data = await getSchema(schId)
-  showXsdXmlDialog.value = true;
-}
-
-const selectSchema = async (schema) => {
-  if (activeScheme?.value?.value === schema?.XsdSchema_ID?.value) {
-    activeScheme.value = null;
-    documentsList.value = [];
-  } else {
-    activeScheme.value = schema.XsdSchema_ID;
-    documentsList.value = await getDocuments(activeScheme.value);
-  }
-}
-
-async function updateSchemaHere() {
-  await updateSchema(createSchemaData.value);
-  void updateSchemaList();
-}
-
-const updateSchemaList = async () => {
-  schemesList.value = await getSchemes();
-}
-
-
-onMounted(async () => {
-  isSupport.value = await checkSupporting();
-  if (isSupport.value) {
-    void updateSchemaList()
-  }
-})
-
-</script>
 
 <style lang="sass">
 
 .my-menu-link
   color: white
   background: var(--q-primary)
+
+.center
+  display: flex
+  align-items: center
+  justify-content: center
+  height: 100%
+
 
 </style>
