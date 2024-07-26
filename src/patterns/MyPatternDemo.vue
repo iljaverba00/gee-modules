@@ -1,15 +1,20 @@
 <script setup lang="ts">
-import {ref} from 'vue'
-import MyPattern from "./modules/MyPattern.vue";
+//import {ref} from 'vue'
+// import MyPattern from "./modules/MyPattern.vue";
+// import FileDirectory from "../modules/file-directory/FileDirectory.vue";
+//
+// const localeFoo = ref('1')
+// const localeBar = ref(1)
 
-const localeFoo = ref('1')
-const localeBar = ref(1)
+import requests from "../modules/xsd-forms-admin/XsdFormAdminService.ts";
+import XsdFormAdmin from "../modules/xsd-forms-admin/XsdFormAdmin.vue";
+
+const req = requests();
+
 </script>
 
 <template>
-  <MyPattern :foo="localeFoo" :bar="localeBar">
-    test
-  </MyPattern>
+ <XsdFormAdmin :requests="req" />
 </template>
 
 <style>

@@ -157,7 +157,7 @@ const fileUploadDecision = async ({ decision, file, parentPath }: IDecisionData)
 }
 
 onMounted(() => {
-  ;['dragover', 'drop'].forEach(eventName => {
+  ['dragover', 'drop'].forEach(eventName => {
     document.addEventListener(eventName, preventDefault)
   })
 
@@ -165,7 +165,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  ;['dragover', 'drop'].forEach(eventName => {
+  ['dragover', 'drop'].forEach(eventName => {
     document.removeEventListener(eventName, preventDefault)
   })
 

@@ -34,25 +34,28 @@ import AgriculturalMessages from './modules/agricultural-messages/AgriculturalMe
 
 import StateSupport from './modules/state-support/StateSupport.vue'
 
-import PhotographicZone from './modules/photographic-zone/PhotographicZone.vue'; 
+import PhotographicZone from './modules/photographic-zone/PhotographicZone.vue';
+
+import XsdFormAdmin from "./modules/xsd-forms-admin/XsdFormAdmin.vue";
 
 export {
-  RegistrationDocumentsGisogd,
-  ProvidingInformationGisogd,
-  ViewingDocumentsGisogd,
-  BuildingPermit,
-  UserVerification,
-  MinagroUserChecking,
-  AgriculturalEnterprise,
-  AgriculturalFields,
-  EmploeesOfEnterprise,
-  LandPlotsFields,
-  MapModule,
-  AgriculturalReports,
-  FileDirectory,
-  AgriculturalMessages,
-  MinagroInformation,
-  StateSupport,
-  AgriculturalAnalytics,
-  PhotographicZone
+    RegistrationDocumentsGisogd,
+    ProvidingInformationGisogd,
+    ViewingDocumentsGisogd,
+    BuildingPermit,
+    UserVerification,
+    MinagroUserChecking,
+    AgriculturalEnterprise,
+    AgriculturalFields,
+    EmploeesOfEnterprise,
+    LandPlotsFields,
+    MapModule,
+    AgriculturalReports,
+    FileDirectory,
+    AgriculturalMessages,
+    MinagroInformation,
+    StateSupport,
+    AgriculturalAnalytics,
+    PhotographicZone,
+    XsdFormAdmin
 };
