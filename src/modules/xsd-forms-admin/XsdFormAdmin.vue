@@ -4,9 +4,16 @@ import {onMounted, ref} from "vue";
 import {
   QSplitter,
   QToolbar,
+  QTooltip,
   QToolbarTitle,
+  QList,
+  QItem,
+  QItemLabel,
+  QItemSection,
   QSeparator,
-  QBtn
+  QBtn,
+  QFile,
+  QInput
 } from 'quasar';
 import ThisDialog from "../../components/ThisDialog.vue";
 import {RequestsXSDType, XFCreateSchema, XFItem, XFItemDocument, XFItemScheme} from "./XsdFormAdminTypes.ts";
@@ -131,8 +138,9 @@ onMounted(async () => {
     <q-separator/>
 
     <q-splitter
-        v-model="splitterHorizontal"
         class="full-height"
+        after-class=""
+        v-model="splitterHorizontal"
         :limits="[30,70]"
     >
       <template v-slot:before>
@@ -251,7 +259,7 @@ onMounted(async () => {
       @cancel="showCreateDialog = false"
       @yes="showCreateDialog = false; updateSchemaHere()"
   >
-    <q-input :model-value="createSchemaData.name" label="Наименование"/>
+    <q-input :model-value="createSchemaData.name" label="Наименование" autofocus/>
     <q-file :model-value="createSchemaData.file" label="Файл XSD схемы" accept=".xsd"/>
   </ThisDialog>
 

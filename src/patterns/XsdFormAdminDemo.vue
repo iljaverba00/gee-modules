@@ -1,14 +1,9 @@
 <script setup lang="ts">
 import requests from "../modules/xsd-forms-admin/XsdFormAdminService.ts";
 import XsdFormAdmin from "../modules/xsd-forms-admin/XsdFormAdmin.vue";
-
-const req = requests();
-
 </script>
-
 <template>
-  <div/>
-  <XsdFormAdmin :requests="req" />
+  <XsdFormAdmin :requests="requests" />
 </template>
 
 <style>
@@ -17,7 +12,6 @@ body {
   width: 100vw;
   margin: 0;
   background-color: #ececec;
-
 }
 
 .app {
