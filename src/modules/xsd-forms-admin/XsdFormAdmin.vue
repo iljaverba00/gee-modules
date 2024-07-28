@@ -170,7 +170,7 @@ onMounted(async () => {
     <q-separator/>
 
     <q-splitter
-        class="full-height"
+        style="height: calc(100% - 50px)"
         after-class=""
         v-model="splitterHorizontal"
         :limits="[30,70]"
@@ -254,9 +254,9 @@ onMounted(async () => {
               </q-item-section>
               <q-item-section top side>
                 <div class="text-grey-8 q-gutter-xs">
-                  <q-btn class="gt-xs" size="12px" flat dense round icon="lock" @click="$event.stopPropagation()">
-                    <q-tooltip>Подписать документ ЭЦП</q-tooltip>
-                  </q-btn>
+<!--                  <q-btn class="gt-xs" size="12px" flat dense round icon="lock" @click="$event.stopPropagation()">-->
+<!--                    <q-tooltip>Подписать документ ЭЦП</q-tooltip>-->
+<!--                  </q-btn>-->
                   <q-btn class="gt-xs" size="12px" flat dense round icon="check"
                          @click="$event.stopPropagation(); onValidateXmlDocument(document.XmlDocument_ID.value)">
                     <q-tooltip>Проверить документ на соответствие схеме</q-tooltip>
