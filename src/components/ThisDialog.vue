@@ -4,6 +4,7 @@
     persistent
     transition-show="fadeslide"
     transition-hide="fadeslide"
+    :maximized = "maximized"
   >
     <q-card>
       <q-card-section
@@ -61,6 +62,7 @@ interface Props {
   cancelBtnLabel: string
   yesBtnDisable: boolean
   cancelBtnDisable: boolean
+  maximized: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
   show: false,
@@ -70,6 +72,7 @@ const props = withDefaults(defineProps<Props>(), {
   cancelBtnLabel: 'Отмена',
   yesBtnDisable: false,
   cancelBtnDisable: false,
+  maximized: false
 })
 
 const { show, title, body, yesBtnLabel, cancelBtnLabel } =

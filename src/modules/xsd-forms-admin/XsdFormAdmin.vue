@@ -300,6 +300,7 @@ onMounted(async () => {
 
   <ThisDialog
       title="Форма для заполнения данных"
+      :maximized = "true"
       :show="showFormDialog"
       @cancel="showFormDialog = false"
       @yes="showFormDialog = false"
