@@ -306,7 +306,7 @@ onMounted(async () => {
       full-width
       full-height
   >
-    <iframe :src="formData" class="full-width full-height"/>
+    <iframe :src="formData" class="full-width my-iframe"/>
   </ThisDialog>
 
   <q-inner-loading :showing="spinnerModel">
@@ -332,7 +332,6 @@ onMounted(async () => {
   height: 100%
 
 .my-iframe
-  width: 700px !important
   height: 500px !important
 
 </style>
