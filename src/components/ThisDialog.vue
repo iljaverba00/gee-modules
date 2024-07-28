@@ -63,6 +63,8 @@ interface Props {
   yesBtnDisable: boolean
   cancelBtnDisable: boolean
   maximized: boolean
+  fullWidth: boolean
+  fullHeight: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
   show: false,
@@ -72,7 +74,9 @@ const props = withDefaults(defineProps<Props>(), {
   cancelBtnLabel: 'Отмена',
   yesBtnDisable: false,
   cancelBtnDisable: false,
-  maximized: false
+  maximized: false,
+  fullWidth: false,
+  fullHeight: false
 })
 
 const { show, title, body, yesBtnLabel, cancelBtnLabel } =

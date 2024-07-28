@@ -303,8 +303,10 @@ onMounted(async () => {
       :show="showFormDialog"
       @cancel="showFormDialog = false"
       @yes="showFormDialog = false"
+      full-width
+      full-height
   >
-    <iframe :src="formData" class="my-iframe"/>
+    <iframe :src="formData" class="full-width full-height"/>
   </ThisDialog>
 
   <q-inner-loading :showing="spinnerModel">
