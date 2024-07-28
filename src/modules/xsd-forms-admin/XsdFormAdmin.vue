@@ -170,7 +170,7 @@ onMounted(async () => {
     <q-separator/>
 
     <q-splitter
-        style="height: calc(100% - 50px)"
+        style="height: calc(100% - 51px)"
         after-class=""
         v-model="splitterHorizontal"
         :limits="[30,70]"
