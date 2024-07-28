@@ -5,6 +5,8 @@
     transition-show="fadeslide"
     transition-hide="fadeslide"
     :maximized = "maximized"
+    :full-width="fullWidth"
+    :full-height="fullHeight"
   >
     <q-card>
       <q-card-section
@@ -79,7 +81,7 @@ const props = withDefaults(defineProps<Props>(), {
   fullHeight: false
 })
 
-const { show, title, body, yesBtnLabel, cancelBtnLabel } =
+const { show, title, body, yesBtnLabel, cancelBtnLabel,maximized,fullWidth,fullHeight } =
   toRefs(props)
 const emit = defineEmits(['yes', 'cancel'])
 
