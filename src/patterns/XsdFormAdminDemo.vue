@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import requests from "../modules/xsd-forms-admin/XsdFormAdminService.ts";
 import XsdFormAdmin from "../modules/xsd-forms-admin/XsdFormAdmin.vue";
+
+const openFileDialog = (val: object)=>{
+  console.log(val)
+}
+
 </script>
 <template>
-  <XsdFormAdmin :requests="requests()" />
+  <XsdFormAdmin :requests="requests()" @openFileDialog="openFileDialog"/>
 </template>
 
 <style>

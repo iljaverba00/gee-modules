@@ -23,17 +23,18 @@ import {RequestsXSDType, XFCreateSchema, XFItem, XFItemDocument, XFItemScheme} f
 const emit = defineEmits<{
   (e: 'moduleStartView'): void
   (e: 'moduleEndView'): void
+  (e: 'openFileDialog'): object
 }>()
 
 const props = defineProps<{ requests: RequestsXSDType }>()
 
 const {
   getSchemes,
-  getSchema,
+  // getSchema,
   updateSchema,
   removeSchema,
   getDocuments,
-  getDocument,
+  // getDocument,
   //updateDocument,
   removeDocument,
   getHTMLForm,
@@ -87,20 +88,12 @@ const onValidateXmlDocument = async (docId: object) => {
   }
 }
 
-const onShowXML = async (docId: object) => {
-  spinner.on();
-  const doc = await getDocument(docId);
-  xsdxmlData.value = JSON.stringify(doc);
-  showXsdXmlDialog.value = true;
-  spinner.off();
+const onShowXML = async (recId: object) => {
+  emit('openFileDialog',{factAlias: "XmlDocument_ID", recId})
 }
 
-const onShowXSD = async (schId: object) => {
-  spinner.on();
-  const sch = await getSchema(schId);
-  xsdxmlData.value = JSON.stringify(sch);
-  showXsdXmlDialog.value = true;
-  spinner.off();
+const onShowXSD = async (recId: object) => {
+  emit('openFileDialog',{factAlias: "XsdSchema_ID", recId})
 }
 
 const selectSchema = async (schema: XFItem) => {

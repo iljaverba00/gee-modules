@@ -14,7 +14,6 @@ const req = requests();
 </script>
 
 <template>
-  <div/>
  <XsdFormAdmin :requests="req" />
 </template>
 

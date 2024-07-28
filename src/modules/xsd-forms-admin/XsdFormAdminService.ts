@@ -2,7 +2,152 @@ import {RequestsXSDType, XFCreateSchema, XFItemDocument, XFItemScheme} from "./X
 
 export default function (): RequestsXSDType {
     const getSchemes = async (): Promise<XFItemScheme[] | undefined> => {
-        return undefined;
+        return [
+            {
+                "XsdSchema_ID": {
+                    "name": "Код",
+                    "value": 1
+                },
+                "zipDATE": {
+                    "name": "Архивная дата изменения",
+                    "value": {
+                        "epochSecond": 1721646527,
+                        "nano": 0
+                    }
+                },
+                "Desc": {
+                    "name": "Описание",
+                    "value": null
+                },
+                "zipLastDate": {
+                    "name": "Дата последнего изменения",
+                    "value": {
+                        "epochSecond": 1722145691,
+                        "nano": 0
+                    }
+                },
+                "zipVERS": {
+                    "name": "Архивная версия",
+                    "value": null
+                },
+                "zipLastUser": {
+                    "name": "Оператор последнего изменения",
+                    "value": "i.verba"
+                },
+                "IsStore": {
+                    "name": "Файловые приложения",
+                    "value": true
+                },
+                "zipOPER": {
+                    "name": "Архивная операция",
+                    "value": 1
+                },
+                "zipUSER": {
+                    "name": "Оператор архивации",
+                    "value": "i.verba"
+                },
+                "Name": {
+                    "name": "Наименование",
+                    "value": "Тест"
+                }
+            },
+            {
+                "XsdSchema_ID": {
+                    "name": "Код",
+                    "value": 6
+                },
+                "zipDATE": {
+                    "name": "Архивная дата изменения",
+                    "value": {
+                        "epochSecond": 1722146293,
+                        "nano": 0
+                    }
+                },
+                "Desc": {
+                    "name": "Описание",
+                    "value": null
+                },
+                "zipLastDate": {
+                    "name": "Дата последнего изменения",
+                    "value": {
+                        "epochSecond": 1722146388,
+                        "nano": 0
+                    }
+                },
+                "zipVERS": {
+                    "name": "Архивная версия",
+                    "value": null
+                },
+                "zipLastUser": {
+                    "name": "Оператор последнего изменения",
+                    "value": "i.verba"
+                },
+                "IsStore": {
+                    "name": "Файловые приложения",
+                    "value": true
+                },
+                "zipOPER": {
+                    "name": "Архивная операция",
+                    "value": 1
+                },
+                "zipUSER": {
+                    "name": "Оператор архивации",
+                    "value": "i.verba"
+                },
+                "Name": {
+                    "name": "Наименование",
+                    "value": "interact_map_plan"
+                }
+            },
+            {
+                "XsdSchema_ID": {
+                    "name": "Код",
+                    "value": 7
+                },
+                "zipDATE": {
+                    "name": "Архивная дата изменения",
+                    "value": {
+                        "epochSecond": 1722164756,
+                        "nano": 0
+                    }
+                },
+                "Desc": {
+                    "name": "Описание",
+                    "value": null
+                },
+                "zipLastDate": {
+                    "name": "Дата последнего изменения",
+                    "value": {
+                        "epochSecond": 1722164756,
+                        "nano": 0
+                    }
+                },
+                "zipVERS": {
+                    "name": "Архивная версия",
+                    "value": null
+                },
+                "zipLastUser": {
+                    "name": "Оператор последнего изменения",
+                    "value": "i.verba"
+                },
+                "IsStore": {
+                    "name": "Файловые приложения",
+                    "value": true
+                },
+                "zipOPER": {
+                    "name": "Архивная операция",
+                    "value": 1
+                },
+                "zipUSER": {
+                    "name": "Оператор архивации",
+                    "value": "i.verba"
+                },
+                "Name": {
+                    "name": "Наименование",
+                    "value": "555"
+                }
+            }
+        ];
     }
 
     const getSchema = async (schId: object): Promise<string | undefined> => {
