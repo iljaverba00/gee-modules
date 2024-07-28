@@ -40,6 +40,16 @@ const {
 } = props.requests
 
 const splitterHorizontal = ref(50);
+const spinnerModel = ref(false);
+const spinner = {
+  on: () => {
+    spinnerModel.value = true;
+  },
+  off: () => {
+    spinnerModel.value = false;
+  }
+}
+
 
 const schemesList = ref<XFItemScheme[] | undefined>([]);
 const documentsList = ref<XFItemDocument[] | undefined>([])
@@ -60,8 +70,10 @@ const isSupport = ref();
 
 
 const onShowFormDialog = async (id: object) => {
+  spinner.on()
   formData.value = await getHTMLForm(id);
   showFormDialog.value = true;
+  spinner.off()
 }
 
 const onValidateXmlDocument = async (docId: object) => {
@@ -74,15 +86,19 @@ const onValidateXmlDocument = async (docId: object) => {
 }
 
 const onShowXML = async (docId: object) => {
+  spinner.on();
   const doc = await getDocument(docId);
   xsdxmlData.value = JSON.stringify(doc);
   showXsdXmlDialog.value = true;
+  spinner.off();
 }
 
 const onShowXSD = async (schId: object) => {
+  spinner.on();
   const sch = await getSchema(schId);
   xsdxmlData.value = JSON.stringify(sch);
   showXsdXmlDialog.value = true;
+  spinner.off();
 }
 
 const selectSchema = async (schema: XFItem) => {
@@ -90,8 +106,10 @@ const selectSchema = async (schema: XFItem) => {
     activeScheme.value = null;
     documentsList.value = [];
   } else {
+    spinner.on()
     activeScheme.value = schema;
     documentsList.value = await getDocuments(activeScheme.value.value);
+    spinner.off()
   }
 }
 
@@ -101,14 +119,19 @@ async function updateSchemaHere(schId?: object) {
 }
 
 const onRemoveDocument = async (docId: object) => {
+  spinner.on()
   await removeDocument(docId);
   await onUpdateDocumentList();
+  spinner.off()
 }
 const onRemoveSchema = async (schId: object) => {
+  spinner.on()
   await removeSchema(schId)
   await onUpdateSchemaList();
+  spinner.off()
 }
 const onUpdateDocumentList = async () => {
+
   if (activeScheme.value) {
     documentsList.value = await getDocuments(activeScheme.value.value);
   }
@@ -186,11 +209,6 @@ onMounted(async () => {
 
               <q-item-section top side>
                 <div class="text-grey-8 q-gutter-xs">
-                  <q-btn :style="activeScheme === schema.XsdSchema_ID?'color:white':''"
-                         class="gt-xs" size="12px" flat dense round icon="preview"
-                         @click="$event.stopPropagation();">
-                    <q-tooltip>Обновить схему</q-tooltip>
-                  </q-btn>
                   <q-btn :style="activeScheme === schema.XsdSchema_ID?'color:white':''"
                          class="gt-xs" size="12px" flat dense round icon="preview"
                          @click="$event.stopPropagation();onShowFormDialog(schema.XsdSchema_ID.value)">
@@ -301,6 +319,14 @@ onMounted(async () => {
   >
     <div class="full-height full-width" v-html="xsdxmlData"/>
   </ThisDialog>
+
+
+  <q-inner-loading :showing="spinnerModel">
+    <q-spinner
+        color="primary"
+        size="5em"
+    />
+  </q-inner-loading>
 
 
 </template>
