@@ -331,6 +331,6 @@ onMounted(async () => {
 
 .my-iframe
   width: 500px !important
-  height: 700px !important
+  height: 500px !important
 
 </style>
