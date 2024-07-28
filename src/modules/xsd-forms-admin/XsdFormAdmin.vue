@@ -74,7 +74,9 @@ const isSupport = ref();
 
 const onShowFormDialog = async (id: object) => {
   spinner.on()
-  formData.value = await getHTMLForm(id);
+  const htmlForm = await getHTMLForm(id);
+  const blob = new Blob([htmlForm], {type: "text/html; charset=utf-8"});
+  formData.value = URL.createObjectURL(blob);
   showFormDialog.value = true;
   spinner.off()
 }
@@ -303,7 +305,7 @@ onMounted(async () => {
       @cancel="showFormDialog = false"
       @yes="showFormDialog = false"
   >
-    <div class="full-height full-width" v-html="formData"/>
+    <iframe :src="formData" class="full-width full-height"/>
   </ThisDialog>
 
   <ThisDialog
