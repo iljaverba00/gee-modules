@@ -66,18 +66,17 @@ const createSchemaData = ref<XFCreateSchema>({name: '', file: undefined})
 const showFormDialog = ref(false);
 const formData = ref<string | undefined>()
 
-const showXsdXmlDialog = ref(false);
-const xsdxmlData = ref<string | undefined>()
-
 const isSupport = ref();
 
 
 const onShowFormDialog = async (id: object) => {
   spinner.on()
   const htmlForm = await getHTMLForm(id);
-  const blob = new Blob([htmlForm], {type: "text/html; charset=utf-8"});
-  formData.value = URL.createObjectURL(blob);
-  showFormDialog.value = true;
+  if (htmlForm != undefined) {
+    const blob = new Blob([htmlForm], {type: "text/html; charset=utf-8"});
+    formData.value = URL.createObjectURL(blob);
+    showFormDialog.value = true;
+  }
   spinner.off()
 }
 
@@ -305,18 +304,8 @@ onMounted(async () => {
       @cancel="showFormDialog = false"
       @yes="showFormDialog = false"
   >
-    <iframe :src="formData" class="full-width full-height"/>
+    <iframe :src="formData" class="my-iframe"/>
   </ThisDialog>
-
-  <ThisDialog
-      title="XSD/XML"
-      :show="showXsdXmlDialog"
-      @cancel="showXsdXmlDialog = false"
-      @yes="showXsdXmlDialog = false"
-  >
-    <div class="full-height full-width" v-html="xsdxmlData"/>
-  </ThisDialog>
-
 
   <q-inner-loading :showing="spinnerModel">
     <q-spinner
@@ -340,5 +329,8 @@ onMounted(async () => {
   justify-content: center
   height: 100%
 
+.my-iframe
+  width: 500px !important
+  height: 700px !important
 
 </style>
