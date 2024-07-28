@@ -300,7 +300,6 @@ onMounted(async () => {
 
   <ThisDialog
       title="Форма для заполнения данных"
-      :maximized = "true"
       :show="showFormDialog"
       @cancel="showFormDialog = false"
       @yes="showFormDialog = false"
@@ -331,7 +330,7 @@ onMounted(async () => {
   height: 100%
 
 .my-iframe
-  width: 500px !important
+  width: 700px !important
   height: 500px !important
 
 </style>
