@@ -23,7 +23,7 @@ import {RequestsXSDType, XFCreateSchema, XFItem, XFItemDocument, XFItemScheme} f
 const emit = defineEmits<{
   (e: 'moduleStartView'): void
   (e: 'moduleEndView'): void
-  (e: 'openFileDialog'): object
+  (e: 'openFileDialog', val: object): void
 }>()
 
 const props = defineProps<{ requests: RequestsXSDType }>()
@@ -89,7 +89,7 @@ const onValidateXmlDocument = async (docId: object) => {
 }
 
 const onShowXML = async (recId: object) => {
-  emit('openFileDialog',{factAlias: "XmlDocument_ID", recId})
+  emit('openFileDialog', {factAlias: "XmlDocument_ID", recId})
 }
 
 const onShowXSD = async (recId: object) => {
