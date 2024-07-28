@@ -13,7 +13,9 @@ import {
   QSeparator,
   QBtn,
   QFile,
-  QInput
+  QInput,
+  QInnerLoading,
+  QSpinner
 } from 'quasar';
 import ThisDialog from "../../components/ThisDialog.vue";
 import {RequestsXSDType, XFCreateSchema, XFItem, XFItemDocument, XFItemScheme} from "./XsdFormAdminTypes.ts";
