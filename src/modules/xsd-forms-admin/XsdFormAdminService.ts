@@ -1,6 +1,6 @@
 import {RequestsXSDType, XFCreateSchema, XFItemDocument, XFItemScheme} from "./XsdFormAdminTypes.ts";
 
-export default function requests(): RequestsXSDType {
+export default function (): RequestsXSDType {
     const getSchemes = async (): Promise<XFItemScheme[] | undefined> => {
         return undefined;
     }
@@ -10,8 +10,8 @@ export default function requests(): RequestsXSDType {
         return undefined;
     }
 
-    const updateSchema = async (sch: XFCreateSchema): Promise<string | undefined> => {
-        console.log('updateSchema', sch)
+    const updateSchema = async (schId: object | undefined,sch: XFCreateSchema): Promise<string | undefined> => {
+        console.log('updateSchema', schId,sch)
         return undefined;
     }
 

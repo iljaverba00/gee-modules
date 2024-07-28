@@ -41,7 +41,7 @@ export interface XFCreateSchema{
 export interface RequestsXSDType {
     getSchemes: () => Promise<XFItemScheme[] | undefined>
     getSchema: (schId: object) => Promise<string | undefined>
-    updateSchema: (sch: XFCreateSchema) => Promise<string | undefined>
+    updateSchema: (schId : object | undefined, sch: XFCreateSchema) => Promise<string | undefined>
     removeSchema: (schId: object) => Promise<string | undefined>
     getDocuments: (docId: object) => Promise<XFItemDocument[] | undefined>
     getDocument: (docId: object) => Promise<string | undefined>

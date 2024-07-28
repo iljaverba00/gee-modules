@@ -95,8 +95,8 @@ const selectSchema = async (schema: XFItem) => {
   }
 }
 
-async function updateSchemaHere() {
-  await updateSchema(createSchemaData.value);
+async function updateSchemaHere(schId?: object) {
+  await updateSchema(schId, createSchemaData.value);
   void onUpdateSchemaList();
 }
 
@@ -188,6 +188,11 @@ onMounted(async () => {
                 <div class="text-grey-8 q-gutter-xs">
                   <q-btn :style="activeScheme === schema.XsdSchema_ID?'color:white':''"
                          class="gt-xs" size="12px" flat dense round icon="preview"
+                         @click="$event.stopPropagation();">
+                    <q-tooltip>Обновить схему</q-tooltip>
+                  </q-btn>
+                  <q-btn :style="activeScheme === schema.XsdSchema_ID?'color:white':''"
+                         class="gt-xs" size="12px" flat dense round icon="preview"
                          @click="$event.stopPropagation();onShowFormDialog(schema.XsdSchema_ID.value)">
                     <q-tooltip>Показать форму для заполнения</q-tooltip>
                   </q-btn>
@@ -275,8 +280,8 @@ onMounted(async () => {
       @cancel="showCreateDialog = false"
       @yes="showCreateDialog = false; updateSchemaHere()"
   >
-    <q-input :model-value="createSchemaData.name" label="Наименование" autofocus/>
-    <q-file :model-value="createSchemaData.file" label="Файл XSD схемы" accept=".xsd"/>
+    <q-input v-model:model-value="createSchemaData.name" label="Наименование" autofocus/>
+    <q-file v-model:model-value="createSchemaData.file" multiple label="Файл XSD схемы" accept=".xsd"/>
   </ThisDialog>
 
   <ThisDialog

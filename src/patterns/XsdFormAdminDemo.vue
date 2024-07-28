@@ -3,7 +3,7 @@ import requests from "../modules/xsd-forms-admin/XsdFormAdminService.ts";
 import XsdFormAdmin from "../modules/xsd-forms-admin/XsdFormAdmin.vue";
 </script>
 <template>
-  <XsdFormAdmin :requests="requests" />
+  <XsdFormAdmin :requests="requests()" />
 </template>
 
 <style>
