@@ -147,6 +147,7 @@ const iframeResponse = async (e: MessageEvent)=>{
   })
   await updateDocument(clickedScheme.value, undefined, {file,name:'testtext'})
   await onUpdateDocumentList();
+  showFormDialog.value = false;
 };
 
 onMounted(async () => {
