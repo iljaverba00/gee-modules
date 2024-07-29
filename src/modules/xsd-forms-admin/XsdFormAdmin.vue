@@ -139,7 +139,7 @@ const onUpdateSchemaList = async () => {
   schemesList.value = await getSchemes();
 }
 
-const iframeResponse = (val)=>{
+const iframeResponse = (val: object)=>{
   console.log(val)
 };
 
