@@ -278,13 +278,13 @@ onUnmounted(()=>{
                   <!--                  <q-btn class="gt-xs" size="12px" flat dense round icon="lock" @click="$event.stopPropagation()">-->
                   <!--                    <q-tooltip>Подписать документ ЭЦП</q-tooltip>-->
                   <!--                  </q-btn>-->
-                  <q-btn class="gt-xs" size="12px" flat dense round icon="check"
+                  <q-btn class="gt-xs" size="12px" flat disable dense round icon="check"
                          @click="$event.stopPropagation(); onValidateXmlDocument(document.XmlDocument_ID.value)">
                     <q-tooltip>Проверить документ на соответствие схеме</q-tooltip>
                   </q-btn>
-                  <q-btn class="gt-xs" size="12px" flat dense round icon="preview"
+                  <q-btn class="gt-xs" size="12px" flat dense round disable icon="preview"
                          @click="$event.stopPropagation(); onShowFormDialog(document.XsdSchema_ID.value)">
-                    <q-tooltip>Заполнить HTML форму заново</q-tooltip>
+                    <q-tooltip>Продолжить заполнение формы</q-tooltip>
                   </q-btn>
                   <q-btn class="gt-xs" size="12px" flat dense round icon="visibility" @click="
                   $event.stopPropagation(); onShowXML(document.XmlDocument_ID.value)">
