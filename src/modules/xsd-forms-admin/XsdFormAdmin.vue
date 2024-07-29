@@ -19,7 +19,7 @@ import {
   QDialog
 } from 'quasar';
 import ThisDialog from "../../components/ThisDialog.vue";
-import {RequestsXSDType, XFCreateSchema, XFItem, XFItemDocument, XFItemScheme} from "./XsdFormAdminTypes.ts";
+import {RequestsXSDType, XFCreate, XFItem, XFItemDocument, XFItemScheme} from "./XsdFormAdminTypes.ts";
 
 const emit = defineEmits<{
   (e: 'moduleStartView'): void
@@ -62,7 +62,7 @@ const activeScheme = ref<XFItem | null>(null);
 //const activeDocument = ref();
 
 const showCreateDialog = ref(false);
-const createSchemaData = ref<XFCreateSchema>({name: '', file: undefined})
+const createSchemaData = ref<XFCreate>({name: '', file: undefined})
 
 const showFormDialog = ref(false);
 const formData = ref<string | undefined>()
@@ -70,13 +70,15 @@ const formData = ref<string | undefined>()
 const isSupport = ref();
 
 
-const onShowFormDialog = async (id: object) => {
+const onShowFormDialog = async (id?: object) => {
   spinner.on()
-  const htmlForm = await getHTMLForm(id);
-  if (htmlForm != undefined) {
-    const blob = new Blob([htmlForm], {type: "text/html; charset=utf-8"});
-    formData.value = URL.createObjectURL(blob);
-    showFormDialog.value = true;
+  if (id) {
+    const htmlForm = await getHTMLForm(id);
+    if (htmlForm != undefined) {
+      const blob = new Blob([htmlForm], {type: "text/html; charset=utf-8"});
+      formData.value = URL.createObjectURL(blob);
+      showFormDialog.value = true;
+    }
   }
   spinner.off()
 }
@@ -162,7 +164,7 @@ onMounted(async () => {
       <q-toolbar-title>
         Настройка XSD-HTML-XML форм
       </q-toolbar-title>
-      <q-btn :disable="!activeScheme" round dense icon="add">
+      <q-btn :disable="!activeScheme" @click="onShowFormDialog(activeScheme?.value)" round dense icon="add">
         <q-tooltip>
           Добавить XML документ
         </q-tooltip>
@@ -264,8 +266,8 @@ onMounted(async () => {
                     <q-tooltip>Проверить документ на соответствие схеме</q-tooltip>
                   </q-btn>
                   <q-btn class="gt-xs" size="12px" flat dense round icon="preview"
-                         @click="$event.stopPropagation(); onShowFormDialog(document.XmlDocument_ID.value)">
-                    <q-tooltip>Заполнить HTML форму</q-tooltip>
+                         @click="$event.stopPropagation(); onShowFormDialog(document.XsdSchema_ID.value)">
+                    <q-tooltip>Заполнить HTML форму заново</q-tooltip>
                   </q-btn>
                   <q-btn class="gt-xs" size="12px" flat dense round icon="visibility" @click="
                   $event.stopPropagation(); onShowXML(document.XmlDocument_ID.value)">
@@ -282,7 +284,10 @@ onMounted(async () => {
           </div>
         </q-list>
         <div class="text-subtitle1 text-primary center" v-else>
-          Выберите схему слева, для отображения документов
+          {{activeScheme?.value ?
+            "К данной схеме еще нет заполненных документов. Нажмите + что бы добавить документ":
+            "Выберите схему слева, для отображения документов по ней"
+          }}
         </div>
       </template>
     </q-splitter>

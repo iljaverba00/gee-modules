@@ -1,4 +1,4 @@
-import {RequestsXSDType, XFCreateSchema, XFItemDocument, XFItemScheme} from "./XsdFormAdminTypes.ts";
+import {RequestsXSDType, XFCreate, XFItemDocument, XFItemScheme} from "./XsdFormAdminTypes.ts";
 
 export default function (): RequestsXSDType {
     const getSchemes = async (): Promise<XFItemScheme[] | undefined> => {
@@ -10,7 +10,7 @@ export default function (): RequestsXSDType {
         return undefined;
     }
 
-    const updateSchema = async (schId: object | undefined,sch: XFCreateSchema): Promise<string | undefined> => {
+    const updateSchema = async (schId: object | undefined, sch: XFCreate): Promise<string | undefined> => {
         console.log('updateSchema', schId,sch)
         return undefined;
     }
@@ -19,23 +19,24 @@ export default function (): RequestsXSDType {
         console.log('removeSchema', schId)
         return undefined
     }
-    const getDocuments = async (): Promise<XFItemDocument[] | undefined> => {
+    const getDocuments = async (schId: object): Promise<XFItemDocument[] | undefined> => {
+        console.log('removeSchema', schId)
         return undefined;
     }
     const getDocument = async (docId: object): Promise<string | undefined> => {
         console.log('getDocument', docId)
         return undefined;
     }
-    const updateDocument = async (): Promise<string | undefined> => {
-        console.log('updateDocument')
+    const updateDocument = async (schId: object | undefined, docId: object, doc: XFCreate): Promise<string | undefined> => {
+        console.log('updateDocument',schId,docId,doc)
         return undefined;
     }
     const removeDocument = async (docId: object): Promise<string | undefined> => {
         console.log('removeDocument', docId)
         return undefined;
     }
-    const getHTMLForm = async (id: object): Promise<string | undefined> => {
-        console.log(id)
+    const getHTMLForm = async (schId: object): Promise<string | undefined> => {
+        console.log(schId)
         return undefined;
     }
     const validateXMLDocument = async (docId: object): Promise<string | undefined> => {

@@ -32,7 +32,7 @@ export interface XFItem {
     value: object
 }
 
-export interface XFCreateSchema{
+export interface XFCreate {
     name: string,
     file: File | undefined
 }
@@ -41,11 +41,11 @@ export interface XFCreateSchema{
 export interface RequestsXSDType {
     getSchemes: () => Promise<XFItemScheme[] | undefined>
     getSchema: (schId: object) => Promise<string | undefined>
-    updateSchema: (schId : object | undefined, sch: XFCreateSchema) => Promise<string | undefined>
+    updateSchema: (schId : object | undefined, sch: XFCreate) => Promise<string | undefined>
     removeSchema: (schId: object) => Promise<string | undefined>
-    getDocuments: (docId: object) => Promise<XFItemDocument[] | undefined>
+    getDocuments: (schId: object) => Promise<XFItemDocument[] | undefined>
     getDocument: (docId: object) => Promise<string | undefined>
-    updateDocument: () => Promise<string | undefined>
+    updateDocument: (schId: object | undefined, docId: object, doc: XFCreate) => Promise<string | undefined>
     removeDocument: (docId: object) => Promise<string | undefined>
     getHTMLForm: (schId: object) => Promise<string | undefined>
     validateXMLDocument: (docId: object) => Promise<string | undefined>
