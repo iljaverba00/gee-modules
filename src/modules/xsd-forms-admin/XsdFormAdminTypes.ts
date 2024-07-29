@@ -45,7 +45,7 @@ export interface RequestsXSDType {
     removeSchema: (schId: object) => Promise<string | undefined>
     getDocuments: (schId: object) => Promise<XFItemDocument[] | undefined>
     getDocument: (docId: object) => Promise<string | undefined>
-    updateDocument: (schId: object | undefined, docId: object, doc: XFCreate) => Promise<string | undefined>
+    updateDocument: (schId: object | undefined, docId: object | undefined, doc: XFCreate) => Promise<string | undefined>
     removeDocument: (docId: object) => Promise<string | undefined>
     getHTMLForm: (schId: object) => Promise<string | undefined>
     validateXMLDocument: (docId: object) => Promise<string | undefined>

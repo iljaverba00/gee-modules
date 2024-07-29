@@ -27,7 +27,7 @@ export default function (): RequestsXSDType {
         console.log('getDocument', docId)
         return undefined;
     }
-    const updateDocument = async (schId: object | undefined, docId: object, doc: XFCreate): Promise<string | undefined> => {
+    const updateDocument = async (schId: object | undefined, docId: object | undefined, doc: XFCreate): Promise<string | undefined> => {
         console.log('updateDocument',schId,docId,doc)
         return undefined;
     }

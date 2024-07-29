@@ -36,7 +36,7 @@ const {
   removeSchema,
   getDocuments,
   // getDocument,
-  //updateDocument,
+  updateDocument,
   removeDocument,
   getHTMLForm,
   validateXMLDocument,
@@ -59,6 +59,7 @@ const schemesList = ref<XFItemScheme[] | undefined>([]);
 const documentsList = ref<XFItemDocument[] | undefined>([])
 
 const activeScheme = ref<XFItem | null>(null);
+const clickedScheme = ref<object | undefined>();
 //const activeDocument = ref();
 
 const showCreateDialog = ref(false);
@@ -73,6 +74,7 @@ const isSupport = ref();
 const onShowFormDialog = async (id?: object) => {
   spinner.on()
   if (id) {
+    clickedScheme.value = id;
     const htmlForm = await getHTMLForm(id);
     if (htmlForm != undefined) {
       const blob = new Blob([htmlForm], {type: "text/html; charset=utf-8"});
@@ -139,8 +141,9 @@ const onUpdateSchemaList = async () => {
   schemesList.value = await getSchemes();
 }
 
-const iframeResponse = (val: object)=>{
-  console.log(val)
+const iframeResponse = async (e: MessageEvent)=>{
+  await updateDocument(clickedScheme.value, undefined, e.data)
+  await onUpdateDocumentList();
 };
 
 onMounted(async () => {
