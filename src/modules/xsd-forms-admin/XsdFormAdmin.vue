@@ -337,6 +337,6 @@ onMounted(async () => {
   width: 100%
   height: 100%
   background: white
-  overflow: hidden
+  overflow: hidden !important
 
 </style>
