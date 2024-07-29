@@ -15,7 +15,8 @@ import {
   QFile,
   QInput,
   QInnerLoading,
-  QSpinner
+  QSpinner,
+  QDialog
 } from 'quasar';
 import ThisDialog from "../../components/ThisDialog.vue";
 import {RequestsXSDType, XFCreateSchema, XFItem, XFItemDocument, XFItemScheme} from "./XsdFormAdminTypes.ts";
@@ -94,7 +95,7 @@ const onShowXML = async (recId: object) => {
 }
 
 const onShowXSD = async (recId: object) => {
-  emit('openFileDialog',{factAlias: "XsdSchema_ID", recId})
+  emit('openFileDialog', {factAlias: "XsdSchema_ID", recId})
 }
 
 const selectSchema = async (schema: XFItem) => {
@@ -255,9 +256,9 @@ onMounted(async () => {
               </q-item-section>
               <q-item-section top side>
                 <div class="text-grey-8 q-gutter-xs">
-<!--                  <q-btn class="gt-xs" size="12px" flat dense round icon="lock" @click="$event.stopPropagation()">-->
-<!--                    <q-tooltip>Подписать документ ЭЦП</q-tooltip>-->
-<!--                  </q-btn>-->
+                  <!--                  <q-btn class="gt-xs" size="12px" flat dense round icon="lock" @click="$event.stopPropagation()">-->
+                  <!--                    <q-tooltip>Подписать документ ЭЦП</q-tooltip>-->
+                  <!--                  </q-btn>-->
                   <q-btn class="gt-xs" size="12px" flat dense round icon="check"
                          @click="$event.stopPropagation(); onValidateXmlDocument(document.XmlDocument_ID.value)">
                     <q-tooltip>Проверить документ на соответствие схеме</q-tooltip>
