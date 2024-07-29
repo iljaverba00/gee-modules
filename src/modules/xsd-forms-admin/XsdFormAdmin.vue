@@ -298,16 +298,17 @@ onMounted(async () => {
     <q-file v-model:model-value="createSchemaData.file" multiple label="Файл XSD схемы" accept=".xsd"/>
   </ThisDialog>
 
-  <ThisDialog
+  <q-dialog
       title="Форма для заполнения данных"
-      :show="showFormDialog"
+      v-model:model-value="showFormDialog"
       @cancel="showFormDialog = false"
       @yes="showFormDialog = false"
-      full-width
-      full-height
   >
-    <iframe :src="formData" class="full-width my-iframe"/>
-  </ThisDialog>
+    <div style=" width: 100%; height: 100% ;background: white">
+      <iframe :src="formData" style="width: 100%; height: 100%"/>
+    </div>
+
+  </q-dialog>
 
   <q-inner-loading :showing="spinnerModel">
     <q-spinner
