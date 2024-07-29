@@ -145,7 +145,7 @@ const iframeResponse = async (e: MessageEvent)=>{
   const file = new File([e.data], "result.xml", {
     type: "text/xml",
   })
-  await updateDocument(clickedScheme.value, undefined,'', file)
+  await updateDocument(clickedScheme.value, undefined, {file,name:'testtext'})
   await onUpdateDocumentList();
 };
 
