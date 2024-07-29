@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import MainWrapper from '../../components/the-basics/MainWrapper.vue'
-import {onMounted, ref} from "vue";
+import {onMounted, onUnmounted, ref} from "vue";
 import {
   QSplitter,
   QToolbar,
@@ -139,11 +139,20 @@ const onUpdateSchemaList = async () => {
   schemesList.value = await getSchemes();
 }
 
+const iframeResponse = (val)=>{
+  console.log(val)
+};
+
 onMounted(async () => {
   isSupport.value = await checkSupporting();
   if (isSupport.value) {
     void onUpdateSchemaList()
+    window.addEventListener('message', iframeResponse)
   }
+})
+
+onUnmounted(()=>{
+  window.removeEventListener('message', iframeResponse)
 })
 
 </script>
