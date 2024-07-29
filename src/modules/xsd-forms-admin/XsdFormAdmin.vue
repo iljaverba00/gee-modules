@@ -147,6 +147,7 @@ onMounted(async () => {
   isSupport.value = await checkSupporting();
   if (isSupport.value) {
     void onUpdateSchemaList()
+    console.log('addEventListener')
     window.addEventListener('message', iframeResponse)
   }
 })
