@@ -305,7 +305,7 @@ onMounted(async () => {
       @cancel="showFormDialog = false"
       @yes="showFormDialog = false"
   >
-    <div style=" width: 100%; height: 100% ;background: white">
+    <div class="my-iframe">
       <iframe :src="formData" style="width: 100%; height: 100%"/>
     </div>
 
@@ -334,6 +334,9 @@ onMounted(async () => {
   height: 100%
 
 .my-iframe
-  height: 500px !important
+  width: 100%
+  height: 100%
+  background: white
+  overflow: hidden
 
 </style>
