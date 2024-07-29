@@ -1,29 +1,25 @@
-<script setup lang="ts">
-//import {ref} from 'vue'
-// import MyPattern from "./modules/MyPattern.vue";
-// import FileDirectory from "../modules/file-directory/FileDirectory.vue";
-//
-// const localeFoo = ref('1')
-// const localeBar = ref(1)
-
-import requests from "../modules/xsd-forms-admin/XsdFormAdminService.ts";
-import XsdFormAdmin from "../modules/xsd-forms-admin/XsdFormAdmin.vue";
-
-const req = requests();
-
-</script>
-
 <template>
- <XsdFormAdmin :requests="req" />
+  <MyPatternDemo
+      :foo="localeFoo"
+      :bar="localeBar"
+  >
+  </MyPatternDemo>
 </template>
 
+<script setup lang="ts">
+import { ref } from 'vue'
+import MyPatternDemo from './MyPatternDemo.vue'
+
+const localeFoo = ref(1)
+const localeBar = ref(1)
+
+</script>
 <style>
 body {
   height: 100vh;
   width: 100vw;
   margin: 0;
   background-color: #ececec;
-
 }
 
 .app {
