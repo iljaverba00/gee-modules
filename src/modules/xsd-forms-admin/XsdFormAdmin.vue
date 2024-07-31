@@ -162,20 +162,20 @@ const onUpdateSchemaList = async () => {
 }
 
 const iframeResponse = async (e: MessageEvent) => {
+  if (e?.data){
+    const file = new File([e.data], "result.xml", {
+      type: "text/xml",
+    })
 
+    if (clickedScheme.value) {
+      const isValid = await validateXML(clickedScheme.value, file);
+      console.log(isValid);
 
-  const file = new File([e.data], "result.xml", {
-    type: "text/xml",
-  })
-
-  if (clickedScheme.value) {
-    const isValid = await validateXML(clickedScheme.value, file);
-    console.log(isValid);
-
-    await updateDocument(clickedScheme.value, undefined, {file, name: 'testtext'})
-    await onUpdateDocumentList();
+      await updateDocument(clickedScheme.value, undefined, {file, name: 'testtext'})
+      await onUpdateDocumentList();
+    }
+    showFormDialog.value = false;
   }
-  showFormDialog.value = false;
 };
 
 onMounted(async () => {
