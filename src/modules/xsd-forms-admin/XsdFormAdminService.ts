@@ -1,4 +1,5 @@
 import {RequestsXSDType, XFCreate, XFItemDocument, XFItemScheme} from "./XsdFormAdminTypes.ts";
+import {AxiosResponse} from "axios";
 
 export default function (): RequestsXSDType {
     const getSchemes = async (): Promise<XFItemScheme[] | undefined> => {
@@ -40,11 +41,12 @@ export default function (): RequestsXSDType {
         console.log('getHTMLForm', schId)
         return undefined;
     }
-    const validateXML = async (schId: object, file: File): Promise<string | undefined> => {
+    const validateXML = async (schId: object, file: File): Promise<AxiosResponse | undefined> => {
+
         console.log('validateXML', schId, file)
         return undefined;
     }
-    const validateXMLDocument = async (docId: object, schId: object): Promise<string | undefined> => {
+    const validateXMLDocument = async (docId: object, schId: object): Promise<AxiosResponse | undefined> => {
         console.log('validateXMLDocument', docId, schId)
         return undefined;
     }

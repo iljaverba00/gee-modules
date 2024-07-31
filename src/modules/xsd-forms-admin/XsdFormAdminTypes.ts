@@ -1,3 +1,4 @@
+import {AxiosResponse} from "axios";
 
 export interface XFItemScheme {
     XsdSchema_ID: XFItem
@@ -24,7 +25,8 @@ export interface XFItemDocument {
     IsStore: XFItem,
     zipOPER: XFItem,
     zipUSER: XFItem,
-    Name: XFItem
+    Name: XFItem,
+    isValid: boolean | undefined | null
 }
 
 export interface XFItem {
@@ -48,7 +50,7 @@ export interface RequestsXSDType {
     updateDocument: (schId: object | undefined, docId: object | undefined, doc: XFCreate) => Promise<string | undefined>
     removeDocument: (docId: object) => Promise<string | undefined>
     getHTMLForm: (schId: object) => Promise<string | undefined>
-    validateXML: (schId: object, file : File) => Promise<string | undefined>
-    validateXMLDocument: (docId: object, schId: object) => Promise<string | undefined>
+    validateXML: (schId: object, file : File) => Promise<AxiosResponse | undefined>
+    validateXMLDocument: (docId: object, schId: object) => Promise<AxiosResponse | undefined>
     checkSupporting: () => Promise<boolean | undefined>
 }
