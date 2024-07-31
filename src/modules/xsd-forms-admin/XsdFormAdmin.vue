@@ -315,7 +315,6 @@ onUnmounted(() => {
                       class="gt-xs" size="12px" flat dense round
                          :icon="document.isValid === undefined ? 'check':'check_circle'"
                          :text-color="document.isValid === true ? 'green':(document.isValid === false? 'red':'')"
-                         :disable="document.isValid !== undefined"
                          @click="$event.stopPropagation(); onValidateXmlDocument(document, document.XsdSchema_ID)">
                     <q-tooltip>Проверить документ на соответствие схеме</q-tooltip>
                     <template v-slot:loading>
