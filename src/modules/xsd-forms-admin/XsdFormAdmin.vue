@@ -39,6 +39,7 @@ const {
   updateDocument,
   removeDocument,
   getHTMLForm,
+  validateXML,
   validateXMLDocument,
   checkSupporting
 } = props.requests
@@ -85,8 +86,8 @@ const onShowFormDialog = async (id?: object) => {
   spinner.off()
 }
 
-const onValidateXmlDocument = async (docId: object) => {
-  const result = await validateXMLDocument(docId)
+const onValidateXmlDocument = async (docId: object, schId: object) => {
+  const result = await validateXMLDocument(docId, schId)
   if (!result) {
     console.log("success")
   } else {
@@ -141,12 +142,20 @@ const onUpdateSchemaList = async () => {
   schemesList.value = await getSchemes();
 }
 
-const iframeResponse = async (e: MessageEvent)=>{
+const iframeResponse = async (e: MessageEvent) => {
+
+
   const file = new File([e.data], "result.xml", {
     type: "text/xml",
   })
-  await updateDocument(clickedScheme.value, undefined, {file,name:'testtext'})
-  await onUpdateDocumentList();
+
+  if(clickedScheme.value) {
+    const isValid = await validateXML(clickedScheme.value, file);
+    console.log(isValid);
+
+    await updateDocument(clickedScheme.value, undefined, {file, name: 'testtext'})
+    await onUpdateDocumentList();
+  }
   showFormDialog.value = false;
 };
 
@@ -159,7 +168,7 @@ onMounted(async () => {
   }
 })
 
-onUnmounted(()=>{
+onUnmounted(() => {
   window.removeEventListener('message', iframeResponse)
 })
 
@@ -278,8 +287,8 @@ onUnmounted(()=>{
                   <!--                  <q-btn class="gt-xs" size="12px" flat dense round icon="lock" @click="$event.stopPropagation()">-->
                   <!--                    <q-tooltip>Подписать документ ЭЦП</q-tooltip>-->
                   <!--                  </q-btn>-->
-                  <q-btn class="gt-xs" size="12px" flat disable dense round icon="check"
-                         @click="$event.stopPropagation(); onValidateXmlDocument(document.XmlDocument_ID.value)">
+                  <q-btn class="gt-xs" size="12px" flat dense round icon="check"
+                         @click="$event.stopPropagation(); onValidateXmlDocument(document.XmlDocument_ID.value, document.XsdSchema_ID.value)">
                     <q-tooltip>Проверить документ на соответствие схеме</q-tooltip>
                   </q-btn>
                   <q-btn class="gt-xs" size="12px" flat dense round disable icon="preview"
@@ -301,9 +310,10 @@ onUnmounted(()=>{
           </div>
         </q-list>
         <div class="text-subtitle1 text-primary center" v-else>
-          {{activeScheme?.value ?
-            "К данной схеме еще нет заполненных документов. Нажмите + что бы добавить документ":
-            "Выберите схему слева, для отображения документов по ней"
+          {{
+            activeScheme?.value ?
+                "К данной схеме еще нет заполненных документов. Нажмите + что бы добавить документ" :
+                "Выберите схему слева, для отображения документов по ней"
           }}
         </div>
       </template>
@@ -326,6 +336,8 @@ onUnmounted(()=>{
       v-model:model-value="showFormDialog"
       @cancel="showFormDialog = false"
       @yes="showFormDialog = false"
+      full-height
+      full-width
   >
     <div class="my-iframe">
       <iframe :src="formData" style="width: 100%; height: 100%"/>

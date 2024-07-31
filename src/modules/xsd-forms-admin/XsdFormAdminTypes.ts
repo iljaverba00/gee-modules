@@ -48,6 +48,7 @@ export interface RequestsXSDType {
     updateDocument: (schId: object | undefined, docId: object | undefined, doc: XFCreate) => Promise<string | undefined>
     removeDocument: (docId: object) => Promise<string | undefined>
     getHTMLForm: (schId: object) => Promise<string | undefined>
-    validateXMLDocument: (docId: object) => Promise<string | undefined>
+    validateXML: (schId: object, file : File) => Promise<string | undefined>
+    validateXMLDocument: (docId: object, schId: object) => Promise<string | undefined>
     checkSupporting: () => Promise<boolean | undefined>
 }
