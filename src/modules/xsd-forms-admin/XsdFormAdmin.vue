@@ -209,7 +209,7 @@ onUnmounted(() => {
       <q-toolbar-title>
         Администрирование XSD-HTML-XML форм
       </q-toolbar-title>
-      <q-btn :disable="!!(!activeScheme && documentsList?.length)" @click="onValidateAll" round dense icon="done_all">
+      <q-btn :disable="!activeScheme || !documentsList?.length" @click="onValidateAll" round dense icon="done_all">
         <q-tooltip>
           Валидировать все документы
         </q-tooltip>
