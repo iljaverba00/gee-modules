@@ -188,7 +188,7 @@ onUnmounted(() => {
         </q-tooltip>
       </q-btn>
       <q-toolbar-title>
-        Настройка XSD-HTML-XML форм
+        Администрирование XSD-HTML-XML форм
       </q-toolbar-title>
       <q-btn :disable="!activeScheme" @click="onShowFormDialog(activeScheme?.value)" round dense icon="add">
         <q-tooltip>
