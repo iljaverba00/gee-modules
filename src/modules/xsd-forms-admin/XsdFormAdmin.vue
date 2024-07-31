@@ -88,7 +88,7 @@ const onShowFormDialog = async (id?: object) => {
 
 const onValidateAll = async () => {
   async function setValid(doc: XFItemDocument) {
-    const res = await validateXMLDocument(doc.XmlDocument_ID, doc.XsdSchema_ID);
+    const res = await validateXMLDocument(doc.XmlDocument_ID.value, doc.XsdSchema_ID.value);
     if (res) {
       doc.isValid = res.status === 200
     }
@@ -311,17 +311,16 @@ onUnmounted(() => {
                   <!--                  <q-btn class="gt-xs" size="12px" flat dense round icon="lock" @click="$event.stopPropagation()">-->
                   <!--                    <q-tooltip>Подписать документ ЭЦП</q-tooltip>-->
                   <!--                  </q-btn>-->
-                  <q-btn class="gt-xs" size="12px" flat dense round
+                  <q-btn :loading = 'document.isValid === null'
+                      class="gt-xs" size="12px" flat dense round
                          :icon="document.isValid === undefined ? 'check':'check_circle'"
                          :text-color="document.isValid === true ? 'green':(document.isValid === false? 'red':'')"
                          :disable="document.isValid !== undefined"
                          @click="$event.stopPropagation(); onValidateXmlDocument(document, document.XsdSchema_ID)">
                     <q-tooltip>Проверить документ на соответствие схеме</q-tooltip>
-                    <q-spinner
-                        v-if="document.isValid === null"
-                        color="primary"
-                        size="1em"
-                    />
+                    <template v-slot:loading>
+                      <q-spinner color="primary" size="1em"/>
+                    </template>
                   </q-btn>
                   <q-btn class="gt-xs" size="12px" flat dense round disable icon="preview"
                          @click="$event.stopPropagation(); onShowFormDialog(document.XsdSchema_ID.value)">
