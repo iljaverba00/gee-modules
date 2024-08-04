@@ -178,14 +178,16 @@ const iframeResponse = async (e: MessageEvent) => {
   }
 };
 
-onMounted(async () => {
+const initial = async () => {
   isSupport.value = await checkSupporting();
   if (isSupport.value) {
     void onUpdateSchemaList()
     console.log('addEventListener')
     window.addEventListener('message', iframeResponse)
   }
-})
+}
+
+onMounted(initial)
 
 onUnmounted(() => {
   window.removeEventListener('message', iframeResponse)
