@@ -187,6 +187,8 @@ const initial = async () => {
   }
 }
 
+defineExpose({initial})
+
 onMounted(initial)
 
 onUnmounted(() => {
