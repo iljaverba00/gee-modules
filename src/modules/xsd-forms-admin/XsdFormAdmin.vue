@@ -72,6 +72,13 @@ const formData = ref<string | undefined>()
 const isSupport = ref();
 
 
+const setDefault = ()=>{
+  schemesList.value = []
+  documentsList.value = []
+  activeScheme.value = null
+  clickedScheme.value = undefined
+}
+
 const onShowFormDialog = async (id?: object) => {
   spinner.on()
   if (id) {
@@ -179,6 +186,8 @@ const iframeResponse = async (e: MessageEvent) => {
 };
 
 const initial = async () => {
+  setDefault();
+
   isSupport.value = await checkSupporting();
   if (isSupport.value) {
     void onUpdateSchemaList()
