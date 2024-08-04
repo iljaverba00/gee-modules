@@ -77,6 +77,7 @@ const setDefault = ()=>{
   documentsList.value = []
   activeScheme.value = null
   clickedScheme.value = undefined
+  isSupport.value = false
 }
 
 const onShowFormDialog = async (id?: object) => {
