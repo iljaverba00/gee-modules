@@ -89,6 +89,7 @@ const onShowFormDialog = async (id?: object) => {
       const blob = new Blob([htmlForm], {type: "text/html; charset=utf-8"});
       formData.value = URL.createObjectURL(blob);
       showFormDialog.value = true;
+      window.addEventListener('message', iframeResponse, {once: true})
     }
   }
   spinner.off()
@@ -191,9 +192,7 @@ const initial = async () => {
 
   isSupport.value = await checkSupporting();
   if (isSupport.value) {
-    void onUpdateSchemaList()
-    console.log('addEventListener')
-    window.addEventListener('message', iframeResponse)
+    void onUpdateSchemaList();
   }
 }
 
@@ -201,9 +200,6 @@ defineExpose({initial})
 
 onMounted(initial)
 
-onUnmounted(() => {
-  window.removeEventListener('message', iframeResponse)
-})
 
 </script>
 
