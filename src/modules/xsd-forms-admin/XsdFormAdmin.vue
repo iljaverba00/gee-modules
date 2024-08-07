@@ -19,7 +19,7 @@ import {
   QDialog
 } from 'quasar';
 import ThisDialog from "../../components/ThisDialog.vue";
-import {RequestsXSDType, XFCreate, XFItem, XFItemDocument, XFItemScheme} from "./XsdFormAdminTypes.ts";
+import {ClickedEl, RequestsXSDType, XFCreate, XFItem, XFItemDocument, XFItemScheme} from "./XsdFormAdminTypes.ts";
 
 const emit = defineEmits<{
   (e: 'moduleStartView'): void
@@ -60,7 +60,7 @@ const schemesList = ref<XFItemScheme[] | undefined>([]);
 const documentsList = ref<XFItemDocument[] | undefined>([])
 
 const activeScheme = ref<XFItem | null>(null);
-const clickedScheme = ref<object | undefined>();
+const clickedElement = ref<ClickedEl | undefined>({schId: undefined, docId: undefined});
 //const activeDocument = ref();
 
 const showCreateDialog = ref(false);
@@ -72,28 +72,46 @@ const formData = ref<string | undefined>()
 const isSupport = ref();
 
 
-const setDefault = ()=>{
+const setDefault = () => {
   schemesList.value = []
   documentsList.value = []
   activeScheme.value = null
-  clickedScheme.value = undefined
+  clickedElement.value = undefined
   isSupport.value = false
 }
 
-const onShowFormDialog = async (id?: object) => {
+const onShowFormDialog = async (schId?: object, docId?: object) => {
   spinner.on()
-  if (id) {
-    clickedScheme.value = id;
-    const htmlForm = await getHTMLForm(id);
+  if (schId) {
+    clickedElement.value = {schId, docId};
+    const htmlForm = await getHTMLForm(schId, docId);
     if (htmlForm != undefined) {
       const blob = new Blob([htmlForm], {type: "text/html; charset=utf-8"});
       formData.value = URL.createObjectURL(blob);
       showFormDialog.value = true;
-      window.addEventListener('message', iframeResponse, {once: true})
+      window.addEventListener('message', iframeResponse.bind, {once: true})
     }
   }
   spinner.off()
 }
+
+const iframeResponse = async (e: MessageEvent) => {
+  if (e?.data) {
+    const file = new File([e.data], "result.xml", {
+      type: "text/xml",
+    })
+    if (clickedElement.value?.schId) {
+
+      //todo нужно сказать юзеру что сохраняешь невалидный но нужно ткнуть что невалидно, а с этим проблемы
+      const isValid = await validateXML(clickedElement.value.schId, file);
+      console.log('isValid', isValid);
+
+      await updateDocument(clickedElement.value.schId, clickedElement.value.docId, {file, name: 'testtext'})
+      await onUpdateDocumentList();
+    }
+    showFormDialog.value = false;
+  }
+};
 
 const onValidateAll = async () => {
   async function setValid(doc: XFItemDocument) {
@@ -170,22 +188,6 @@ const onUpdateSchemaList = async () => {
   schemesList.value = await getSchemes();
 }
 
-const iframeResponse = async (e: MessageEvent) => {
-  if (e?.data){
-    const file = new File([e.data], "result.xml", {
-      type: "text/xml",
-    })
-
-    if (clickedScheme.value) {
-      const isValid = await validateXML(clickedScheme.value, file);
-      console.log(isValid);
-
-      await updateDocument(clickedScheme.value, undefined, {file, name: 'testtext'})
-      await onUpdateDocumentList();
-    }
-    showFormDialog.value = false;
-  }
-};
 
 const initial = async () => {
   setDefault();
@@ -196,10 +198,10 @@ const initial = async () => {
   }
 }
 
+// При смене банка дергаем initial, дропаем его наружу
 defineExpose({initial})
 
 onMounted(initial)
-
 
 </script>
 
@@ -224,7 +226,7 @@ onMounted(initial)
           Валидировать все документы
         </q-tooltip>
       </q-btn>
-      <q-btn :disable="!activeScheme" @click="onShowFormDialog(activeScheme?.value)" round dense icon="add">
+      <q-btn :disable="!activeScheme" @click="onShowFormDialog(activeScheme?.value,undefined)" round dense icon="add">
         <q-tooltip>
           Добавить XML документ
         </q-tooltip>
@@ -270,7 +272,7 @@ onMounted(initial)
                 <div class="text-grey-8 q-gutter-xs">
                   <q-btn :style="activeScheme === schema.XsdSchema_ID?'color:white':''"
                          class="gt-xs" size="12px" flat dense round icon="preview"
-                         @click="$event.stopPropagation();onShowFormDialog(schema.XsdSchema_ID.value)">
+                         @click="$event.stopPropagation();onShowFormDialog(schema.XsdSchema_ID.value, undefined)">
                     <q-tooltip>Показать форму для заполнения</q-tooltip>
                   </q-btn>
                   <q-btn :style="activeScheme === schema.XsdSchema_ID?'color:white':''"
@@ -321,8 +323,8 @@ onMounted(initial)
                   <!--                  <q-btn class="gt-xs" size="12px" flat dense round icon="lock" @click="$event.stopPropagation()">-->
                   <!--                    <q-tooltip>Подписать документ ЭЦП</q-tooltip>-->
                   <!--                  </q-btn>-->
-                  <q-btn :loading = 'document.isValid === null'
-                      class="gt-xs" size="12px" flat dense round
+                  <q-btn :loading='document.isValid === null'
+                         class="gt-xs" size="12px" flat dense round
                          :icon="document.isValid === undefined ? 'check':'check_circle'"
                          :text-color="document.isValid === true ? 'green':(document.isValid === false? 'red':'')"
                          @click="$event.stopPropagation(); onValidateXmlDocument(document, document.XsdSchema_ID)">
@@ -331,8 +333,8 @@ onMounted(initial)
                       <q-spinner color="primary" size="1em"/>
                     </template>
                   </q-btn>
-                  <q-btn class="gt-xs" size="12px" flat dense round disable icon="preview"
-                         @click="$event.stopPropagation(); onShowFormDialog(document.XsdSchema_ID.value)">
+                  <q-btn class="gt-xs" size="12px" flat dense round icon="preview"
+                         @click="$event.stopPropagation(); onShowFormDialog(document.XsdSchema_ID.value, document.XmlDocument_ID.value)">
                     <q-tooltip>Продолжить заполнение формы</q-tooltip>
                   </q-btn>
                   <q-btn class="gt-xs" size="12px" flat dense round icon="visibility" @click="
@@ -391,8 +393,6 @@ onMounted(initial)
         size="5em"
     />
   </q-inner-loading>
-
-
 </template>
 
 <style lang="sass">
@@ -414,9 +414,9 @@ onMounted(initial)
   overflow: hidden !important
 
 .q-splitter__panel .q-splitter__after
-  overflow-y: scroll
+  overflow-y: auto
 
 .q-splitter__panel .q-splitter__before
-  overflow-y: scroll
+  overflow-y: auto
 
 </style>

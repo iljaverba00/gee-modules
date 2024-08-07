@@ -39,6 +39,11 @@ export interface XFCreate {
     file: File | undefined
 }
 
+export interface ClickedEl {
+    schId?: object
+    docId?: object
+}
+
 
 export interface RequestsXSDType {
     getSchemes: () => Promise<XFItemScheme[] | undefined>
@@ -49,7 +54,7 @@ export interface RequestsXSDType {
     getDocument: (docId: object) => Promise<string | undefined>
     updateDocument: (schId: object | undefined, docId: object | undefined, doc: XFCreate) => Promise<string | undefined>
     removeDocument: (docId: object) => Promise<string | undefined>
-    getHTMLForm: (schId: object) => Promise<string | undefined>
+    getHTMLForm: (schId: object, docId: object | undefined) => Promise<string | undefined>
     validateXML: (schId: object, file : File) => Promise<AxiosResponse | undefined>
     validateXMLDocument: (docId: object, schId: object) => Promise<AxiosResponse | undefined>
     checkSupporting: () => Promise<boolean | undefined>
