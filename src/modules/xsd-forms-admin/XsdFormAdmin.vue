@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import MainWrapper from '../../components/the-basics/MainWrapper.vue'
-import {onMounted, onUnmounted, ref} from "vue";
+import {onMounted, ref} from "vue";
 import {
   QSplitter,
   QToolbar,
@@ -412,5 +412,11 @@ onMounted(initial)
   height: 100%
   background: white
   overflow: hidden !important
+
+.q-splitter__panel .q-splitter__after
+  overflow-y: scroll
+
+.q-splitter__panel .q-splitter__before
+  overflow-y: scroll
 
 </style>
