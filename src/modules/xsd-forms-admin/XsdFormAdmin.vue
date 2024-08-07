@@ -193,7 +193,7 @@ const initial = async () => {
   if (isSupport.value) {
     void onUpdateSchemaList()
     console.log('addEventListener')
-    window.addEventListener('message', iframeResponse)
+    window.addEventListener('message', iframeResponse, {once: true})
   }
 }
 
