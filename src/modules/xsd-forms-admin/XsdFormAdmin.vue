@@ -89,7 +89,7 @@ const onCreateDocument = async ()=> {
   await updateDocument(schId, undefined, {file:createDocumentData.value.file, name: createDocumentData.value.name})
   await onUpdateDocumentList();
 
-  const docId = documentsList.value?.map(d => d.XmlDocument_ID).reduce((a, b) => a > b ? a : b)?.value;
+  const docId = documentsList.value?.map(d => d.XmlDocument_ID.value).reduce((a, b) => a > b ? a : b);
   await onShowFormDialog(schId, docId);
   spinner.off()
 }
