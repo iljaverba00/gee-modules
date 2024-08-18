@@ -40,6 +40,8 @@ import CreateRecord from './modules/create-record/CreateRecord.vue'
 
 import XsdFormAdmin from "./modules/xsd-forms-admin/XsdFormAdmin.vue";
 
+import XsdFormClient from './modules/xsd-forms-client/XsdFormClient.vue';
+
 export {
     RegistrationDocumentsGisogd,
     ProvidingInformationGisogd,
@@ -60,5 +62,6 @@ export {
     AgriculturalAnalytics,
     PhotographicZone,
     CreateRecord,
-    XsdFormAdmin
+    XsdFormAdmin,
+    XsdFormClient,
 };
