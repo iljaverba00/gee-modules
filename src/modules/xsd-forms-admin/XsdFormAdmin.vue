@@ -66,6 +66,9 @@ const clickedElement = ref<ClickedEl | undefined>({schId: undefined, docId: unde
 const showCreateDialog = ref(false);
 const createSchemaData = ref<XFCreate>({name: '', file: undefined})
 
+const showCreateDocumentDialog = ref(false);
+const createDocumentData = ref<XFCreate>({name: '', file: undefined})
+
 const showFormDialog = ref(false);
 const formData = ref<string | undefined>()
 
@@ -78,6 +81,15 @@ const setDefault = () => {
   activeScheme.value = null
   clickedElement.value = undefined
   isSupport.value = false
+}
+
+const onCreateDocument = async ()=> {
+  const schId = activeScheme.value?.value;
+  await updateDocument(schId, undefined, {file:createDocumentData.value.file, name: createDocumentData.value.name})
+  await onUpdateDocumentList();
+
+  const docId = documentsList.value?.map(d => d.XmlDocument_ID).reduce((a, b) => a > b ? a : b);
+  await onShowFormDialog(schId, docId);
 }
 
 const onShowFormDialog = async (schId?: object, docId?: object) => {
@@ -226,11 +238,21 @@ onMounted(initial)
           Валидировать все документы
         </q-tooltip>
       </q-btn>
-      <q-btn :disable="!activeScheme" @click="onShowFormDialog(activeScheme?.value,undefined)" round dense icon="add">
-        <q-tooltip>
-          Добавить XML документ
-        </q-tooltip>
-      </q-btn>
+      <q-btn-group rounded>
+        <q-btn :disable="!activeScheme"
+               @click="showCreateDocumentDialog = true"
+               round dense icon="post_add">
+          <q-tooltip>
+            Создать XML документ на основе существующего
+          </q-tooltip>
+        </q-btn>
+        <q-btn :disable="!activeScheme" @click="onShowFormDialog(activeScheme?.value,undefined)" round dense icon="add">
+          <q-tooltip>
+            Создать XML документ
+          </q-tooltip>
+        </q-btn>
+      </q-btn-group>
+
     </q-toolbar>
 
     <q-separator/>
@@ -371,6 +393,16 @@ onMounted(initial)
   >
     <q-input v-model:model-value="createSchemaData.name" label="Наименование" autofocus/>
     <q-file v-model:model-value="createSchemaData.file" multiple label="Файл XSD схемы" accept=".xsd"/>
+  </ThisDialog>
+
+  <ThisDialog
+      title="Заполните данные документа"
+      :show="showCreateDocumentDialog"
+      @cancel="showCreateDocumentDialog = false"
+      @yes="showCreateDocumentDialog = false; onCreateDocument()"
+  >
+    <q-input v-model:model-value="createDocumentData.name" label="Наименование документа" autofocus/>
+    <q-file v-model:model-value="createDocumentData.file" multiple label="Файл - хml документ" accept=".xml"/>
   </ThisDialog>
 
   <q-dialog
