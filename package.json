@@ -1,7 +1,7 @@
 {
   "name": "@gee/business",
   "private": false,
-  "version": "0.0.8",
+  "version": "0.0.12",
   "license": "MIT",
   "type": "module",
   "files": [

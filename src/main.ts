@@ -36,6 +36,8 @@ import StateSupport from './modules/state-support/StateSupport.vue'
 
 import PhotographicZone from './modules/photographic-zone/PhotographicZone.vue';
 
+import CreateRecord from './modules/create-record/CreateRecord.vue'
+
 import XsdFormAdmin from "./modules/xsd-forms-admin/XsdFormAdmin.vue";
 
 export {
@@ -57,5 +59,6 @@ export {
     StateSupport,
     AgriculturalAnalytics,
     PhotographicZone,
+    CreateRecord,
     XsdFormAdmin
 };
