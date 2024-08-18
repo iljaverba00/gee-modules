@@ -84,12 +84,14 @@ const setDefault = () => {
 }
 
 const onCreateDocument = async ()=> {
+  spinner.on()
   const schId = activeScheme.value?.value;
   await updateDocument(schId, undefined, {file:createDocumentData.value.file, name: createDocumentData.value.name})
   await onUpdateDocumentList();
 
-  const docId = documentsList.value?.map(d => d.XmlDocument_ID).reduce((a, b) => a > b ? a : b);
+  const docId = documentsList.value?.map(d => d.XmlDocument_ID).reduce((a, b) => a > b ? a : b)?.value;
   await onShowFormDialog(schId, docId);
+  spinner.off()
 }
 
 const onShowFormDialog = async (schId?: object, docId?: object) => {
