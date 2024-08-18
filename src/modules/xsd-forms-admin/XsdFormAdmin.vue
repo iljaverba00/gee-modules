@@ -404,7 +404,7 @@ onMounted(initial)
       @yes="showCreateDocumentDialog = false; onCreateDocument()"
   >
     <q-input v-model:model-value="createDocumentData.name" label="Наименование документа" autofocus/>
-    <q-file v-model:model-value="createDocumentData.file" multiple label="Файл - хml документ" accept=".xml"/>
+    <q-file v-model:model-value="createDocumentData.file" label="Файл - хml документ" accept=".xml"/>
   </ThisDialog>
 
   <q-dialog
