@@ -83,14 +83,15 @@ const setDefault = () => {
   isSupport.value = false
 }
 
-const onCreateDocument = async ()=> {
+const onCreateDocument = async () => {
   spinner.on()
   const schId = activeScheme.value?.value;
-  await updateDocument(schId, undefined, {file:createDocumentData.value.file, name: createDocumentData.value.name})
+  await updateDocument(schId, undefined, {file: createDocumentData.value.file, name: createDocumentData.value.name})
   await onUpdateDocumentList();
 
   const docId = documentsList.value?.map(d => d.XmlDocument_ID.value).reduce((a, b) => a > b ? a : b);
   await onShowFormDialog(schId, docId);
+  createDocumentData.value = {name: '', file: undefined}
   spinner.off()
 }
 
@@ -178,6 +179,7 @@ const selectSchema = async (schema: XFItem) => {
 async function updateSchemaHere(schId?: object) {
   await updateSchema(schId, createSchemaData.value);
   void onUpdateSchemaList();
+  createSchemaData.value = {name:'', file:undefined}
 }
 
 const onRemoveDocument = async (docId: object) => {
@@ -245,12 +247,12 @@ onMounted(initial)
                @click="showCreateDocumentDialog = true"
                round dense icon="post_add">
           <q-tooltip>
-            Создать XML документ на основе существующего
+            Создать документ на основе xml файла
           </q-tooltip>
         </q-btn>
         <q-btn :disable="!activeScheme" @click="onShowFormDialog(activeScheme?.value,undefined)" round dense icon="add">
           <q-tooltip>
-            Создать XML документ
+            Создать документ
           </q-tooltip>
         </q-btn>
       </q-btn-group>

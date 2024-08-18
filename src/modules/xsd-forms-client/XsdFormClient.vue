@@ -110,6 +110,9 @@ const clickedElement = ref<ClickedEl | undefined>({ schId: undefined, docId: und
 const showCreateDialog = ref(false);
 const createSchemaData = ref<XFCreate>({ name: '', file: undefined });
 
+const showCreateDocumentDialog = ref(false);
+const createDocumentData = ref<XFCreate>({name: '', file: undefined})
+
 // const showFormDialog = ref(false);
 const formData = ref<string | undefined>();
 
@@ -124,6 +127,18 @@ const setDefault = () => {
   clickedElement.value = undefined;
   isSupport.value = false;
 };
+
+const onCreateDocument = async () => {
+  spinner.on()
+  const schId = activeScheme.value?.value;
+  await updateDocument(schId, undefined, {file: createDocumentData.value.file, name: createDocumentData.value.name})
+  await onUpdateDocumentList();
+
+  const docId = documentsList.value?.map(d => d.XmlDocument_ID.value).reduce((a, b) => a > b ? a : b);
+  await onShowFormDialog(schId, docId);
+  createDocumentData.value = {name: '', file: undefined}
+  spinner.off()
+}
 
 const updateToolbarTitle = (param: number) => {
   if (param == 1) {
@@ -345,15 +360,27 @@ onMounted(initial);
       >
         <q-tooltip v-if="!showForm"> Валидировать все документы </q-tooltip>
       </q-btn>
-      <q-btn
-        :disable="!activeScheme"
-        @click="!showForm ? (showNameDialog = true) : ((showForm = false), updateToolbarTitle(3)), docName = ''"
-        round
-        dense
-        :icon="!showForm ? 'add' : 'close'"
-      >
-        <q-tooltip> {{ !showForm ? 'Добавить XML документ' : 'Закрыть' }} </q-tooltip>
-      </q-btn>
+      <q-btn-group rounded>
+        <q-btn
+            v-if="!showForm"
+            :disable="!activeScheme"
+            @click="showCreateDocumentDialog = true"
+            round dense icon="post_add">
+          <q-tooltip>
+            Создать документ на основе xml файла
+          </q-tooltip>
+        </q-btn>
+        <q-btn
+            :disable="!activeScheme"
+            @click="!showForm ? (showNameDialog = true) : ((showForm = false), updateToolbarTitle(3)), docName = ''"
+            round
+            dense
+            :icon="!showForm ? 'add' : 'close'"
+        >
+          <q-tooltip> {{ !showForm ? 'Создать документ' : 'Закрыть' }} </q-tooltip>
+        </q-btn>
+      </q-btn-group>
+
     </q-toolbar>
 
     <q-separator />
@@ -579,7 +606,7 @@ onMounted(initial);
             class="close-button"
           >
             <q-tooltip>Закрыть</q-tooltip></q-btn -->
-        
+
           <div class="my-iframe">
             <iframe :src="formData" @load="initEventListener" style="width: 100%; height: 100%" />
           </div>
@@ -607,6 +634,18 @@ onMounted(initial);
       accept=".xsd"
     />
   </ThisDialog>
+
+  <ThisDialog
+      title="Заполните данные документа"
+      :show="showCreateDocumentDialog"
+      @cancel="showCreateDocumentDialog = false"
+      @yes="showCreateDocumentDialog = false; onCreateDocument()"
+  >
+    <q-input v-model:model-value="createDocumentData.name" label="Наименование документа" autofocus/>
+    <q-file v-model:model-value="createDocumentData.file" label="Файл - хml документ" accept=".xml"/>
+  </ThisDialog>
+
+
   <ThisDialog
     v-model:model-value="showNameDialog"
     title="Имя документа"
